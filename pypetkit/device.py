@@ -42,7 +42,7 @@ class PetKitDevice:
 
     @property
     def food(self):
-        return return self._sensor["state"]["food"] == 1
+        return self._sensor["state"]["food"] == 1
 
     @property
     def feeding(self):
