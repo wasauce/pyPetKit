@@ -8,17 +8,17 @@ Obtain status of feeders (including whether food reserves are getting low, or th
 
 With the PuraX litter system, obtain the status, litter remaining, warnings (eg: waste bin needs emptying, cat is currently near/in the litterbox, etc), and retrieve the "pet visiting patterns" *(see futher below)*. Trigger an odour removal, cleaning cycle, or remote power-off/power-on of the unit and update the self-cleaning and deodourising schedule (note: a number of these I've got all the API information, but not completed coding in full - the above documents the current work that I'm doing with the code).
 
-If you accuratelty record your cat's weight for each cat in the PetKit app (and they have distinct weights, I aim to match the pet up with each "visit" to the PuraX litterbox - inspired by the work of [@lydian](lydian/petkit_pura_x_exporter), but implemented afresh).
+If you accuratelty record your cat's weight for each cat in the PetKit app (and they have distinct weights, I aim to match the pet up with each "visit" to the PuraX litterbox - inspired by the work of [@lydian](lydian/petkit_pura_x_exporter), but expected to be implemented afresh).
 
 Testing performed on the **PetKit Fresh Element 3** Smart Pet Feeder, as well as the **PuraX Automated Cat Litter System**.
 
 ### Warning: ###
 
-I've reverse-engineered a number of smart-home products, and to date, this is the first I've seen that sends 99% of its communications between it's mobile apps and its API servers in plain-text using HTTP!
+I've reverse-engineered a number of smart-home products, and to date, this is the first I've seen that sends 99% of its communications between PetKit's mobile apps and its API servers in plain-text using HTTP!
 
 While your account password is hashed using MD5 before being sent across the Internet, no other personal info is.
 
-Additionally, BEWARE if you allow the mobile app permissions to access location information - it sends this embedded in the HTTP header of __EVERY API CALL__ it makes to its servers - completely unencrypted! With the iOS app, even revoking location permissions doesn't stop it from sending the exact latitude/longitude of the last place it was able to get a position fix on you.
+Additionally, BEWARE if you allow the mobile app permissions to access location information - it sends this embedded in the HTTP header of __EVERY API CALL__ it makes to its servers - completely unencrypted! With the iOS app, even revoking location permissions doesn't stop it from sending the exact latitude/longitude of the last place it was able to get a position fix on you. 
 
 Information such as your wireless network SSID and BSSID (MAC address of your router), your email address, your location, and anything you disclose about yourself or your pets are all flying around unsecured (so I cringe to think what the security at both the server and device firmware ends are like).
 
@@ -49,7 +49,7 @@ As I'm able to capture MitM API calls between the iOS PetKit app and their API s
 
 The latest version of the API documentation (as an ongoing Work-In-Progress) can be found at one of the following links.  
 
-*___PLEASE Note:___ This are in no way offical documentation of the PetKit API's, and I can't be responsible for any breaking changes that PetKit makes, nor any data loss (or data breach given that they don't impmenet HTTPS communications to their API servers!).*
+*___PLEASE Note:___ These are in no way offical documentation of the PetKit API's, and I can't be responsible for any breaking changes that PetKit makes, nor any data loss (or data breach given that PetKit doesn't impmenet HTTPS communications on their main API servers!).*
 
  - [PetKit (D3) Fresh Element 3 Pet Feeder API 
 Methods](https://bit.ly/PetKit_API_D3)
