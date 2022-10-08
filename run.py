@@ -1,5 +1,5 @@
 from pypetkit import PetKitAPI
-from .settings import (
+from settings import (
     API_USERNAME,
     API_PASSWORD,
     API_COUNTRY_CODE,

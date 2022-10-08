@@ -1,6 +1,6 @@
 # User Credentials for demo.py
 
-API_USERNAME = "morganpartee@gmail.com"
+API_USERNAME = "me@gmail.com"
 API_PASSWORD = "somethingsecure"
 
 API_COUNTRY_CODE = "US"
