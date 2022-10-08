@@ -1,21 +1,37 @@
-import json
+import pytz
 import requests
+import logging
 
 from datetime import datetime
 from .schedule import PetKitSchedule
 from .history import PetKitHistory
 from .const import *
 
+_LOGGER = logging.getLogger(__name__)
+_LOGGER.setLevel(logging.DEBUG)
+
+
 class PetKitDevice:
-    def __init__(self, token, sensor, apiServerUrl = 'http://api.petkt.com/latest/'):
-      self._access_token = token
-      self._sensor = sensor
-      self._sensor["schedule"] = {}
-      self._apiServerBaseURL = apiServerUrl
-      for sh in sensor["feed"]["items"]:
-          shd = PetKitSchedule(sh)
-          self._sensor["schedule"][sh["id"]] = shd
-      self.get_history(datetime.now().strftime("%Y%m%d"))
+    def __init__(
+        self,
+        token,
+        sensor,
+        apiServerUrl="http://api.petkt.com/latest/",
+        timezone="America/Chicago",
+        country="US",
+        locale="en_US",
+    ):
+        self._access_token = token
+        self._sensor = sensor
+        self._sensor["schedule"] = {}
+        self._apiServerBaseURL = apiServerUrl
+        self._country = country
+        self._locale = locale
+        self._tzone = pytz.timezone(timezone)
+        for sh in sensor["feed"]["items"]:
+            shd = PetKitSchedule(sh)
+            self._sensor["schedule"][sh["id"]] = shd
+        self.get_history(datetime.now().strftime("%Y%m%d"))
 
     @property
     def id(self):
@@ -59,29 +75,27 @@ class PetKitDevice:
 
     def get_history(self, day):
         custom_headers = {
-            'X-Session': self._access_token,
+            "X-Session": self._access_token,
             "User-Agent": "PETKIT/7.26.1 (iPhone; iOS 14.7.1; Scale/3.00)",
             "X-Timezone": f"{round(self._tzone._utcoffset.seconds/60/60)}.0",
             "X-Api-Version": "7.26.1",
             "X-Img-Version": "1",
             "X-TimezoneId": self._tzone.zone,
             "X-Client": "ios(14.7.1;iPhone13,4)",
-            "X-Locale": self._locale.replace("-", "_")
+            "X-Locale": self._locale.replace("-", "_"),
         }
 
-        params = {
-            "deviceId": self._sensor["id"],
-            "days": day
-        }
+        params = {"deviceId": self._sensor["id"], "days": day}
         result = requests.post(
-            self._apiServerBaseURL + API_FEEDERMINI_HISTORY_PATH, data = params, headers = custom_headers)
+            self._apiServerBaseURL + API_FEEDERMINI_HISTORY_PATH,
+            data=params,
+            headers=custom_headers,
+        )
         try:
             self._sensor["history"] = []
-            for item in result.json()['result']:
-                for history in item['items']:
-                  self._sensor["history"].append(PetKitHistory(history))
+            for item in result.json()["result"]:
+                for history in item["items"]:
+                    self._sensor["history"].append(PetKitHistory(history))
 
         except (KeyError, TypeError) as err:
-            _LOGGER.error(
-                "Error requesting history from PetKit: {}".format(err)
-            )
+            _LOGGER.error("Error requesting history from PetKit: {}".format(err))

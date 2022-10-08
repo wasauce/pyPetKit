@@ -1,8 +1,8 @@
 # User Credentials for demo.py
 
-API_USERNAME        = "<<EMAIL>>"
-API_PASSWORD        = "<<PASSWORD>"
+API_USERNAME = "morganpartee@gmail.com"
+API_PASSWORD = "Tqw$Ec-50tbkZQR"
 
-API_COUNTRY_CODE    = "AU"
-API_LOCALE_CODE     = "en-AU"
-API_TIMEZONE        = "Australia/Melbourne"
+API_COUNTRY_CODE = "US"
+API_LOCALE_CODE = "en-US"
+API_TIMEZONE = "America/Chicago"
