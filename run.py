@@ -19,6 +19,6 @@ print(f"Authorized: {petkit_api.is_authorized}")
 
 pprint(
     petkit_api.send_api_request(
-        "d4/saveDailyFeed", params={"deviceId": 10019856, "amount": 10, "time": -1}
+        "d4/saveDailyFeed", params={"deviceId": 10020257, "amount": 10, "time": -1}
     )
 )
