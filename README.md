@@ -25,6 +25,15 @@ Information such as your wireless network SSID and BSSID (MAC address of your ro
 This library obviously isn't stealthily going to be sending ongoing location data to PetKit servers, but the library can only communicate with PetKit servers using the same methods as their native smart device apps (which is HTTP, and exchanges a surprising amount of information - including BACK FROM THE PETKIT SERVERS once you've configured your own devices using their native app).  
 
 This library will never be a substitute for using the PetKit official app(s), but I provide you with fair warning that the security protecting your information is pretty weak!
+### Setup: ###
+
+    pip install -r requirements.txt
+
+    git clone https://github.com/luxonis/depthai-python.git
+    cd depthai-python/examples
+    python3 install_requirements.py
+
+
 ### Usage: ###
 
     from pypetkit import PetKitAPI
