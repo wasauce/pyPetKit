@@ -27,6 +27,8 @@ petkit_api = PetKitAPI(
 petkit_api.request_token()
 
 
+TIMEOUT = 180
+
 
 labelMap = ["background", "aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair", "cow",
             "diningtable", "dog", "horse", "motorbike", "person", "pottedplant", "sheep", "sofa", "train", "tvmonitor"]
@@ -114,11 +116,11 @@ def main():
             frame = imgFrame.getCvFrame()
             trackletsData = track.tracklets
             for t in trackletsData:
-                roi = t.roi.denormalize(frame.shape[1], frame.shape[0])
-                x1 = int(roi.topLeft().x)
-                y1 = int(roi.topLeft().y)
-                x2 = int(roi.bottomRight().x)
-                y2 = int(roi.bottomRight().y)
+                # roi = t.roi.denormalize(frame.shape[1], frame.shape[0])
+                # x1 = int(roi.topLeft().x)
+                # y1 = int(roi.topLeft().y)
+                # x2 = int(roi.bottomRight().x)
+                # y2 = int(roi.bottomRight().y)
 
                 try:
                     label = labelMap[t.label]
@@ -128,8 +130,11 @@ def main():
 
                 if str(label) == 'person':
                     now = datetime.datetime.utcnow()
+                    if now.hour > 5 and now.hour < 14:
+                        print(f'snack window is closed')
+                        continue
                     if past_dt:
-                        test_dt = past_dt + datetime.timedelta(seconds=60)
+                        test_dt = past_dt + datetime.timedelta(seconds=TIMEOUT)
                         if now > test_dt:
                             past_dt = now
                             # give a snack
@@ -145,15 +150,15 @@ def main():
                             "d4/saveDailyFeed", params={"deviceId": 10020257, "amount": 10, "time": -1}
                         )
 
-                cv2.putText(frame, str(label), (x1 + 10, y1 + 20), cv2.FONT_HERSHEY_TRIPLEX, 0.5, 255)
-                cv2.putText(frame, f"ID: {[t.id]}", (x1 + 10, y1 + 35), cv2.FONT_HERSHEY_TRIPLEX, 0.5, 255)
-                cv2.putText(frame, t.status.name, (x1 + 10, y1 + 50), cv2.FONT_HERSHEY_TRIPLEX, 0.5, 255)
-                cv2.rectangle(frame, (x1, y1), (x2, y2), color, cv2.FONT_HERSHEY_SIMPLEX)
+            #     cv2.putText(frame, str(label), (x1 + 10, y1 + 20), cv2.FONT_HERSHEY_TRIPLEX, 0.5, 255)
+            #     cv2.putText(frame, f"ID: {[t.id]}", (x1 + 10, y1 + 35), cv2.FONT_HERSHEY_TRIPLEX, 0.5, 255)
+            #     cv2.putText(frame, t.status.name, (x1 + 10, y1 + 50), cv2.FONT_HERSHEY_TRIPLEX, 0.5, 255)
+            #     cv2.rectangle(frame, (x1, y1), (x2, y2), color, cv2.FONT_HERSHEY_SIMPLEX)
+            #
+            # cv2.putText(frame, "NN fps: {:.2f}".format(fps), (2, frame.shape[0] - 4), cv2.FONT_HERSHEY_TRIPLEX, 0.4,
+            #             color)
 
-            cv2.putText(frame, "NN fps: {:.2f}".format(fps), (2, frame.shape[0] - 4), cv2.FONT_HERSHEY_TRIPLEX, 0.4,
-                        color)
-
-            cv2.imshow("tracker", frame)
+            # cv2.imshow("tracker", frame)
 
             if cv2.waitKey(1) == ord('q'):
                 break
